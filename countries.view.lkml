@@ -4,7 +4,7 @@ view: countries {
   dimension: country {
     primary_key: yes
     type: string
-#     map_layer_name: countries
+    map_layer_name: countries
     sql: ${TABLE}.Country ;;
   }
 

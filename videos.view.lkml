@@ -185,9 +185,18 @@ view: videos {
     sql: ${TABLE}.title ;;
   }
 
-  dimension: trending_date {
-    type: string
-    sql: ${TABLE}.trending_date ;;
+  dimension_group: trending {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: PARSE_DATE("%Y.%d.%m",  CONCAT('20',${TABLE}.trending_date)) ;;
   }
 
   dimension: video_error_or_removed {
