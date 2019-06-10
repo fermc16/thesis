@@ -3,9 +3,13 @@ view: countries {
 
   dimension: country {
     primary_key: yes
-    type: string
-    map_layer_name: countries
-    sql: ${TABLE}.Country ;;
+    sql: trim(${TABLE}.Country);;
+    map_layer_name: countries_map_layer
+  }
+
+  dimension: neighborhood {
+    sql: trim(${country}) ;;
+    map_layer_name: countries_map_layer
   }
 
   dimension: agriculture {
