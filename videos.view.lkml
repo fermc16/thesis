@@ -256,7 +256,7 @@ view: videos {
 
   dimension: Views_videos{
     type: tier
-    tiers: [0,200000,400000,600000,800000,1000000, 2000000, 3000000, 4000000, 5000000]
+    tiers: [500000, 1000000]
     style: integer
     sql: ${views};;
   }
@@ -394,21 +394,23 @@ view: videos {
 #     sql:  ${count_distinct} ;;
     value_format: "#.0\%"
     html: {% if rendered_value == '.8%' %}
-      <img src="https://chart.googleapis.com/chart?chs=220x100&cht=gom&chma=0,0,0,0&chxt=y&chco=009A49,FFFFFF,FF7900&chf=bg,s,FFFFFF00&chl={{rendered_value}}&chd=t:{{ value }}">
+      <img height="70%" width="90%" src="https://chart.googleapis.com/chart?chs=300x200&cht=gom&chma=0,0,0,0&chxt=y&chco=009A49,FFFFFF,FF7900&chf=bg,s,FFFFFF00&chl={{rendered_value}}&chd=t:{{ value }}">
     {% else %}
-      <img src="https://chart.googleapis.com/chart?chs=220x100&cht=gom&chma=0,0,0,0&chxt=y&chco=282828,ffffff,ff0000&chf=bg,s,FFFFFF00&chl={{rendered_value}}&chd=t:{{ value }}">
+      <img height="70%" width="90%" src="https://chart.googleapis.com/chart?chs=300x200&cht=gom&chma=0,0,0,0&chxt=y&chco=282828,ffffff,ff0000&chf=bg,s,FFFFFF00&chl={{rendered_value}}&chd=t:{{ value }}">
     {% endif %};;
 
   }
 
   measure: count_distinct {
     type: count_distinct
+    label: "Videos Count"
     sql: ${video_id};;
     drill_fields: [thumbnail_link, title, channel_title, publish_date, likes, dislikes, comment_count, views]
   }
 
   measure: count {
+    label: "Videos Entries Count"
     type: count
-    drill_fields: [thumbnail_link, title, channel_title, publish_date, country]
+    drill_fields: [thumbnail_link, title, channel_title, publish_date, likes, dislikes, comment_count, views]
   }
 }

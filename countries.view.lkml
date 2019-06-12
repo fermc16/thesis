@@ -107,6 +107,41 @@ view: countries {
     sql: ${TABLE}.Service ;;
   }
 
+  dimension: flag {
+    type: string
+    sql: ${country};;
+#     html: <img src="https://logo-core.clearbit.com/looker.com" /> ;;
+    html: {% if value == 'Brazil' %}
+      <img src="http://www.flags.net/images/largeflags/BRAZ0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'Canada' %}
+      <img src="http://www.flags.net/images/largeflags/CANA0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'France' %}
+      <img src="http://www.flags.net/images/largeflags/FRAN0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'Germany' %}
+      <img src="http://www.flags.net/images/largeflags/GERM0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'India' %}
+      <img src="http://www.flags.net/images/largeflags/INDA0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'Ireland' %}
+      <img src="http://www.flags.net/images/largeflags/IREL0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'Japan' %}
+      <img src="http://www.flags.net/images/largeflags/JAPA0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'United Kingdom' %}
+      <img src="http://www.flags.net/images/largeflags/UNKG0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'Russia' %}
+      <img src="http://www.flags.net/images/largeflags/RUSS0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'Korea, South' %}
+      <img src="http://www.flags.net/images/largeflags/SKOR0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'Mexico' %}
+      <img src="http://www.flags.net/images/largeflags/MEXC0001.GIF"style="width:100%;height:100%;">
+     {% elsif value == 'Venezuela' %}
+      <img src="http://www.flags.net/images/largeflags/VENZ0001.GIF"style="width:100%;height:100%;">
+      {% elsif value == 'United States' %}
+      <img src="http://www.flags.net/images/largeflags/UNST0001.GIF"style="width:100%;height:100%;">
+     {% else  %}
+      <img src="http://www.flags.net/images/largeflags/IREL0001.GIF"style="width:100%;height:100%;">
+    {% endif %} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: []

@@ -100,11 +100,12 @@ view: rank_trending_duration {
 SELECT
   videos.title  AS videos_title,
   videos.country AS videos_country,
+  videos.thumbnail_link AS videos_thumbnail_link,
   RANK() OVER (PARTITION BY country ORDER BY COUNT(*) DESC) AS rank,
   COUNT(*) AS videos_count
 FROM videos
 
-GROUP BY 1,2
+GROUP BY 1,2,3
 ORDER BY 2
  ;;
   }
@@ -116,7 +117,13 @@ ORDER BY 2
 
   dimension: videos_title {
     type: string
-    sql: ${TABLE}.videos_title ;;
+    sql: replace(${TABLE}.videos_title, ',', ' ') ;;
+  }
+
+  dimension: videos_thumbnail_link {
+    type: string
+    sql: ${TABLE}.videos_thumbnail_link ;;
+    html: <img src="{{ value }}" style="width:50%;height:100%;">;;
   }
 
   dimension: videos_country {
@@ -137,6 +144,7 @@ ORDER BY 2
   measure: max_count{
     type: max
     sql: ${videos_count} ;;
+    drill_fields: [videos_thumbnail_link, videos_title, videos_country]
   }
 
   set: detail {
