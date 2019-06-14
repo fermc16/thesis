@@ -284,7 +284,7 @@ view: videos {
 
   dimension: youtube_banner {
     sql: ${pk};;
-    html: <img src="https://www.lifewire.com/thmb/GOhZXvhYk5iDSQXv5nS9UTbtLiU=/768x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/YouTube_logo_2015.svg-57ebbd433df78c690fc6ffa0.png" style="width:100%;height:10%;"> ;;
+    html: <img src="https://www.lifewire.com/thmb/GOhZXvhYk5iDSQXv5nS9UTbtLiU=/768x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/YouTube_logo_2015.svg-57ebbd433df78c690fc6ffa0.png" style="width:72%;height:72%;"> ;;
   }
 
   dimension_group: trending {
@@ -326,6 +326,34 @@ view: videos {
   dimension: Publish_Hour {
     type: number
     sql: EXTRACT(HOUR FROM TIMESTAMP ${publish_time}) ;;
+  }
+
+  dimension: Month {
+    type: number
+    sql: EXTRACT(MONTH FROM TIMESTAMP ${publish_time}) ;;
+  }
+
+  dimension: Publish_Month{
+    type: string
+    case: {
+      when: {
+        sql: ${Month} = 12 OR ${Month} = 1 OR ${Month} = 2;;
+        label: "Winter"
+      }
+      when: {
+        sql: ${Month} = 3 OR ${Month} = 4 OR ${Month} = 5;;
+        label: "Spring"
+      }
+      when: {
+        sql: ${Month} = 6 OR ${Month} = 7 OR ${Month} = 8;;
+        label: "Summer"
+      }
+      when: {
+        sql: ${Month} = 9 OR ${Month} = 10 OR ${Month} = 11;;
+        label: "Autumn"
+      }
+      else: "-"
+    }
   }
 
   dimension: Day_week_number {
@@ -393,11 +421,15 @@ view: videos {
     sql: 100.0*${count}/423938 ;;
 #     sql:  ${count_distinct} ;;
     value_format: "#.0\%"
-    html: {% if rendered_value == '.8%' %}
-      <img height="70%" width="90%" src="https://chart.googleapis.com/chart?chs=300x200&cht=gom&chma=0,0,0,0&chxt=y&chco=009A49,FFFFFF,FF7900&chf=bg,s,FFFFFF00&chl={{rendered_value}}&chd=t:{{ value }}">
+    html:
+    <div class="alert alert-info vis">
+    <br>
+    {% if rendered_value == '.8%' %}
+      <p><img height="100%" width="100%" src="https://chart.googleapis.com/chart?chs=300x200&cht=gom&chma=0,0,0,0&chxt=y&chco=009A49,FFFFFF,FF7900&chf=bg,s,FFFFFF00&chl={{rendered_value}}&chd=t:{{ value }}"></p>
     {% else %}
-      <img height="70%" width="90%" src="https://chart.googleapis.com/chart?chs=300x200&cht=gom&chma=0,0,0,0&chxt=y&chco=282828,ffffff,ff0000&chf=bg,s,FFFFFF00&chl={{rendered_value}}&chd=t:{{ value }}">
-    {% endif %};;
+      <p><img height="100%" width="100%" src="https://chart.googleapis.com/chart?chs=300x200&cht=gom&chma=0,0,0,0&chxt=y&chco=282828,ffffff,ff0000&chf=bg,s,FFFFFF00&chl={{rendered_value}}&chd=t:{{ value }}"></p>
+    {% endif %}
+    </div>;;
 
   }
 
@@ -406,6 +438,42 @@ view: videos {
     label: "Videos Count"
     sql: ${video_id};;
     drill_fields: [thumbnail_link, title, channel_title, publish_date, likes, dislikes, comment_count, views]
+  }
+
+  measure: count_summer {
+    type: count_distinct
+    sql: ${video_id};;
+    filters: {
+      field: Publish_Month
+      value: "Summer"
+    }
+  }
+
+  measure: count_winter {
+    type: count_distinct
+    sql: ${video_id};;
+    filters: {
+      field: Publish_Month
+      value: "Winter"
+    }
+  }
+
+  measure: count_spring {
+    type: count_distinct
+    sql: ${video_id};;
+    filters: {
+      field: Publish_Month
+      value: "Spring"
+    }
+  }
+
+  measure: count_autumn {
+    type: count_distinct
+    sql: ${video_id};;
+    filters: {
+      field: Publish_Month
+      value: "Autumn"
+    }
   }
 
   measure: count {

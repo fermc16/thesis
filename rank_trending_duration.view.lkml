@@ -98,6 +98,7 @@ view: rank_trending_duration {
 
       SELECT GENERATE_UUID() as pk, * FROM QUERY )
 SELECT
+  videos.video_id AS videos_id,
   videos.title  AS videos_title,
   videos.country AS videos_country,
   videos.thumbnail_link AS videos_thumbnail_link,
@@ -105,7 +106,7 @@ SELECT
   COUNT(*) AS videos_count
 FROM videos
 
-GROUP BY 1,2,3
+GROUP BY 1,2,3,4
 ORDER BY 2
  ;;
   }
@@ -113,6 +114,11 @@ ORDER BY 2
   measure: count {
     type: count
     drill_fields: [detail*]
+  }
+
+  dimension: videos_id {
+    type: string
+    sql: ${TABLE}.videos_id ;;
   }
 
   dimension: videos_title {
@@ -123,7 +129,16 @@ ORDER BY 2
   dimension: videos_thumbnail_link {
     type: string
     sql: ${TABLE}.videos_thumbnail_link ;;
-    html: <img src="{{ value }}" style="width:50%;height:100%;">;;
+    html: <a href="https://www.youtube.com/watch?v={{ videos_id._value }}" target="_blank" ><img src="{{ value }}" style="width:50%;height:100%;"></a>;;
+  }
+
+  dimension: video_link {
+    sql: ${videos_id} ;;
+    link: {
+      label: "https://www.youtube.com/watch?v={{value}}"
+      url: "https://www.youtube.com/watch?v={{value}}"
+      icon_url : "https://www.youtube.com/favicon.ico"
+    }
   }
 
   dimension: videos_country {

@@ -5,7 +5,7 @@ include: "*.view"
 
 datagroup: fernanda_thesis_default_datagroup {
 #   sql_trigger: SELECT MAX(pk) FROM word_cloud;;
-  max_cache_age: "1 hour"
+  max_cache_age: "1200 hour"
 }
 
 persist_with: fernanda_thesis_default_datagroup
