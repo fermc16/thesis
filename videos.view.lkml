@@ -401,8 +401,18 @@ view: videos {
     sql: ${views} ;;
   }
 
+  measure: view_avg {
+    type: average
+    sql: ${views} ;;
+  }
+
   measure: comment_sum {
     type: sum
+    sql: ${comment_count} ;;
+  }
+
+  measure: comment_avg {
+    type: average
     sql: ${comment_count} ;;
   }
 
@@ -411,8 +421,18 @@ view: videos {
     sql: ${likes} ;;
   }
 
+  measure: likes_avg {
+    type: average
+    sql: ${likes} ;;
+  }
+
   measure: dislikes_sum {
     type: sum
+    sql: ${dislikes} ;;
+  }
+
+  measure: dislikes_avg {
+    type: average
     sql: ${dislikes} ;;
   }
 
@@ -447,7 +467,14 @@ view: videos {
       field: Publish_Month
       value: "Summer"
     }
-  }
+    drill_fields: [Publish_Day, Publish_Hour, count_summer]
+    link: {label: "Publish Day and Time" url: "https://productday.dev.looker.com/looks/1334"}
+#     link: {label: "Publish Day and Time"
+#       url: "
+#   {% assign vis_config = '{\"x_axis_gridlines\":false,\"y_axis_gridlines\":true,\"show_view_names\":false,\"show_y_axis_labels\":true,\"show_y_axis_ticks\":true,\"y_axis_tick_density\":\"default\",\"y_axis_tick_density_custom\":5,\"show_x_axis_label\":true,\"show_x_axis_ticks\":true,\"y_axis_scale_mode\":\"linear\",\"x_axis_reversed\":false,\"y_axis_reversed\":false,\"plot_size_by_field\":false,\"trellis\":\"\",\"stacking\":\"\",\"limit_displayed_rows\":false,\"hidden_series\":[],\"legend_position\":\"center\",\"series_types\":{},\"point_style\":\"none\",\"show_value_labels\":false,\"label_density\":25,\"x_axis_scale\":\"auto\",\"y_axis_combined\":true,\"trend_lines\":[],\"show_null_points\":true,\"interpolation\":\"linear\",\"type\":\"sankey\"}' %}
+#   {{ link }}&vis_config={{ vis_config | encode_uri }}&toggle=dat,pik,vis&limit=5000"}
+   }
+
 
   measure: count_winter {
     type: count_distinct
@@ -456,7 +483,10 @@ view: videos {
       field: Publish_Month
       value: "Winter"
     }
+    drill_fields: [categories.title]
+    link: {label: "Publish Day and Time" url: "https://productday.dev.looker.com/looks/1334"}
   }
+
 
   measure: count_spring {
     type: count_distinct
@@ -465,6 +495,8 @@ view: videos {
       field: Publish_Month
       value: "Spring"
     }
+#     html: <a href="https://productday.dev.looker.com/looks/1334" target="_blank" >{{ value }}</a>;;
+    link: {label: "Publish Day and Time" url: "https://productday.dev.looker.com/looks/1334"}
   }
 
   measure: count_autumn {
@@ -474,6 +506,7 @@ view: videos {
       field: Publish_Month
       value: "Autumn"
     }
+    link: {label: "Publish Day and Time" url: "https://productday.dev.looker.com/looks/1334"}
   }
 
   measure: count {

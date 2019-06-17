@@ -5,7 +5,7 @@ include: "*.view"
 
 datagroup: fernanda_thesis_default_datagroup {
 #   sql_trigger: SELECT MAX(pk) FROM word_cloud;;
-  max_cache_age: "1200 hour"
+max_cache_age: "1200 hour"
 }
 
 persist_with: fernanda_thesis_default_datagroup
@@ -36,7 +36,13 @@ explore: categories {}
 
 explore: word_cloud{}
 
-explore: rank_trending_duration {}
+explore: rank_trending_duration {
+  join: videos {
+    type: left_outer
+    sql_on: ${rank_trending_duration.videos_id}=${videos.video_id}  ;;
+    relationship: many_to_one
+  }
+}
 
 map_layer: countries_map_layer {
   file: "map.topojson"
