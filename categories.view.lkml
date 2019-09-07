@@ -37,7 +37,51 @@ view: categories {
   dimension: title {
     type: string
     sql: ${TABLE}.title ;;
+    link: {
+      label: "Dashboard B filtering {{ value }} "
+      url: "https://productday.dev.looker.com/dashboards/410?Date Filter={{ _filters['videos.publish_date'] }}&Country=Brazil&Category={{ value | url_encode}}"
+      icon_url: "http://www.looker.com/favicon.ico"
+    }
+    link: {
+      label: "Explore {{ value }}"
+      url: "https://productday.dev.looker.com/explore/fernanda_thesis/videos?fields=categories.title,videos.count_summer,videos.count_winter,videos.title&f[videos.publish_date]={{ _filters['videos.publish_date'] }}&f[videos.country]=Ireland&f[categories.title]={{ value | url_encode}}"
+      icon_url: "https://looker.com/favicon.ico"
+    }
   }
+
+
+  dimension: title_color {
+    type: number
+    sql:  CASE WHEN ${title}= "Comedy" THEN 1
+    WHEN ${title}= "Drama" THEN 2
+    END;;
+    html:  {{categories.title._value}} ;;
+  }
+
+
+  dimension: is_valid{
+    type: yesno
+    sql: CASE WHEN
+      ${title_color} IS NULL
+      THEN TRUE
+      ELSE FALSE
+    END;;
+  }
+
+  dimension_group: date {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: current_date() ;;
+  }
+
 
   measure: count {
     type: count

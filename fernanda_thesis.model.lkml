@@ -30,11 +30,15 @@ explore: videos {
   }
 }
 
-explore: countries {}
+explore: countries {
+  extends: [categories ]
+}
 
 explore: categories {}
 
 explore: word_cloud{}
+
+explore: videos_sme{}
 
 explore: rank_trending_duration {
   join: videos {

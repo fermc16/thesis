@@ -114,7 +114,7 @@ view: videos {
   dimension: country {
     type: string
     sql: ${TABLE}.country ;;
-    map_layer_name: countries_map_layer
+    # map_layer_name: countries_map_layer
   }
 
   dimension: country_map {
@@ -177,9 +177,26 @@ view: videos {
       }
   }
 
+  measure: dummy {
+    type: number
+    sql: 1=1 ;;
+    drill_fields: [channel_title]
+  }
+
   dimension: category_id {
     type: number
     sql: ${TABLE}.category_id ;;
+    drill_fields: [channel_title, publish_year]
+    # link: {label: "Test Dimension Drill" url: "{{ dummy._link }}&sorts=publish_year+desc" }
+
+    link: {label: "tetsy"
+    url: "
+    {% assign filter_config = '{}' %}
+    {% assign vis_config = '
+    {\"type\":\"table\"}' %}
+
+    {{ dummy._link }}&pivots=publish_year"
+  }
   }
 
   dimension: channel_title {
@@ -226,6 +243,11 @@ view: videos {
     sql: ${TABLE}.publish_time ;;
   }
 
+  dimension: publish_dates {
+    type: date
+    sql: ${publish_date} ;;
+  }
+
   dimension: ratings_disabled {
     type: yesno
     sql: ${TABLE}.ratings_disabled ;;
@@ -252,6 +274,8 @@ view: videos {
     tiers: [0,20,40,60,80,100]
     style: integer
     sql: CHAR_LENGTH(${TABLE}.title);;
+    value_format: "$#,##0"
+    html: <p style="text-align:center">{{ value }}</p>;;
   }
 
   dimension: Views_videos{
@@ -326,6 +350,7 @@ view: videos {
   dimension: Publish_Hour {
     type: number
     sql: EXTRACT(HOUR FROM TIMESTAMP ${publish_time}) ;;
+    drill_fields: [Publish_Day, Publish_Hour, count_summer]
   }
 
   dimension: Month {
@@ -479,6 +504,7 @@ view: videos {
 
   measure: count_winter {
     type: count_distinct
+    # hidden: yes
     sql: ${video_id};;
     filters: {
       field: Publish_Month
@@ -487,6 +513,8 @@ view: videos {
     drill_fields: [Publish_Day, Publish_Hour, count_winter]
     link: {label: "Publish Day and Time" url: "https://productday.dev.looker.com/looks/1334"
       icon_url: "https://youtube.com/favicon.ico"}
+
+    # POWERFUL DRILLL: link: {label: "Explore Top 20 Results" url: "{{ link }}&limit=20" }
   }
 
 
@@ -510,14 +538,25 @@ view: videos {
       field: Publish_Month
       value: "Autumn"
     }
-    drill_fields: [Publish_Day, Publish_Hour, count_autumn]
-    link: {label: "Publish Day and Time" url: "https://productday.dev.looker.com/looks/1334"
-      icon_url: "https://youtube.com/favicon.ico"}
+    drill_fields: [user_details*, user_details2*]
+    # link: {label: "Publish Day and Time" url: "https://productday.dev.looker.com/looks/1334"
+    #   icon_url: "https://youtube.com/favicon.ico"}
   }
+
+
 
   measure: count {
     label: "Videos Entries Count"
     type: count
     drill_fields: [thumbnail_link, title, channel_title, publish_date, likes, dislikes, comment_count, views]
   }
+
+  set: user_details {
+    fields: [title]
+  }
+
+  set: user_details2 {
+    fields: [likes, dislikes]
+  }
+
 }
