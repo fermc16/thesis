@@ -65,5 +65,4 @@ view: videos_sme {
     {% endif %};;
   }
 
-
 }

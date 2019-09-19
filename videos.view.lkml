@@ -543,6 +543,64 @@ view: videos {
     #   icon_url: "https://youtube.com/favicon.ico"}
   }
 
+  dimension: district_overview_link {
+    sql: ${video_id};;
+    link: {
+      label: "District Overview"
+#       trending date has to be on the filters with valid values
+      url: "https://productday.dev.looker.com/dashboards/313?Period={{_filters['videos.trending_date'] | url_encode }}"}
+  }
+
+    parameter: yr {
+      type: unquoted
+      allowed_value: {value: "2017" label:"2017"}
+      allowed_value: {value: "2018" label:"2018"}
+    }
+
+    dimension: chosen_dynamic_measure  {
+      hidden: yes
+      sql:{% parameter yr %};;
+    }
+
+    measure: dynamic_measure {
+      label_from_parameter: yr
+      type: sum
+      sql:
+         {% if chosen_dynamic_measure._sql == "2017" %}
+         ${views}
+         {% else %}
+         ${days_diff}
+         {% endif %}
+        ;;
+  }
+
+
+  dimension: date {
+    label_from_parameter: timeframe_picker
+    type: date
+    sql: ${TABLE}.{% parameter timeframe_picker %} ;;
+  }
+
+
+  #### BUG - always_filter with parameters
+  parameter: timeframe_picker {
+    label: "Date Granularity"
+    type: unquoted
+    allowed_value: {
+      label: "Day"
+      value: "publish_time"
+    }
+    allowed_value: {
+      label: "Week"
+      value: "dim_week"
+    }
+    allowed_value: {
+      label: "Month"
+      value: "dim_month"
+    }
+    default_value: "Day"
+  }
+
 
 
   measure: count {
