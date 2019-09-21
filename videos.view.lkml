@@ -575,14 +575,13 @@ view: videos {
   }
 
 
+  #### BUG - always_filter with parameters
   dimension: date {
     label_from_parameter: timeframe_picker
     type: date
     sql: ${TABLE}.{% parameter timeframe_picker %} ;;
   }
 
-
-  #### BUG - always_filter with parameters
   parameter: timeframe_picker {
     label: "Date Granularity"
     type: unquoted
