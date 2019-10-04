@@ -11,16 +11,17 @@ max_cache_age: "1200 hour"
 persist_with: fernanda_thesis_default_datagroup
 
 explore: videos {
-  always_filter: {
-    filters: {
-      field: categories.title
-      value: "Comedy"
-      }
-    filters: {
-      field: timeframe_picker
-      value: "Day"
-    }
-  }
+ #### BUG - always_filter with parameters
+#   always_filter: {
+#     filters: {
+#       field: categories.title
+#       value: "Comedy"
+#       }
+#     filters: {
+#       field: timeframe_picker
+#       value: "Day"
+#     }
+#   }
   join: countries {
     type: left_outer
     sql_on: trim(${videos.country}) =trim(${countries.country}) ;;
@@ -49,6 +50,8 @@ explore: categories {}
 explore: word_cloud{}
 
 explore: videos_sme{}
+
+explore: create_process{}
 
 explore: rank_trending_duration {
   join: videos {

@@ -25,6 +25,7 @@ view: videos_sme {
 
   filter: date_filter {
     type: date
+#     default_value: "{{_user_attributes['last_name']}}"
   }
 
   filter: channel_filter {

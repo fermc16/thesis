@@ -576,31 +576,29 @@ view: videos {
 
 
   #### BUG - always_filter with parameters
-  dimension: date {
-    label_from_parameter: timeframe_picker
-    type: date
-    sql: ${TABLE}.{% parameter timeframe_picker %} ;;
-  }
+#   dimension: date {
+#     label_from_parameter: timeframe_picker
+#     type: date
+#     sql: ${TABLE}.{% parameter timeframe_picker %} ;;
+#   }
 
-  parameter: timeframe_picker {
-    label: "Date Granularity"
-    type: unquoted
-    allowed_value: {
-      label: "Day"
-      value: "publish_time"
-    }
-    allowed_value: {
-      label: "Week"
-      value: "dim_week"
-    }
-    allowed_value: {
-      label: "Month"
-      value: "dim_month"
-    }
-    default_value: "Day"
-  }
-
-
+#   parameter: timeframe_picker {
+#     label: "Date Granularity"
+#     type: unquoted
+#     allowed_value: {
+#       label: "Day"
+#       value: "publish_time"
+#     }
+#     allowed_value: {
+#       label: "Week"
+#       value: "dim_week"
+#     }
+#     allowed_value: {
+#       label: "Month"
+#       value: "dim_month"
+#     }
+#     default_value: "Day"
+#   }
 
   measure: count {
     label: "Videos Entries Count"
