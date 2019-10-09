@@ -600,6 +600,41 @@ view: videos {
 #     default_value: "Day"
 #   }
 
+
+#### DX-1857
+  dimension: Customer_byparking_tmp {
+    label: "Customer parking bucket tmp"
+    type: number
+#     hidden: yes
+    sql: case when ${Day_week_number} = 0 then '0'
+                when ${Day_week_number} = 1 then '1'
+                when ${Day_week_number}  = 2 then '2'
+                when ${Day_week_number} = 3 then '6'
+                when ${Day_week_number}  = 4 then '11'
+                when ${Day_week_number}  = 5 then '21'
+                when ${Day_week_number}  = 6 then '51'
+                when ${Day_week_number} = 7 then '100'
+                else 'null'
+                end;;
+  }
+
+  dimension: Customer_byparking {
+#     alpha_sort: yes
+    label: "Customer parking bucket"
+    type: string
+    sql: case when ${Customer_byparking_tmp} ='0' then '0 Parking'
+                when ${Customer_byparking_tmp} ='1' then '1 Parking'
+                when ${Customer_byparking_tmp}='2' then '2-5 Parkings'
+                when ${Customer_byparking_tmp}='6'  then '6-10 Parkings'
+                when ${Customer_byparking_tmp}='11'  then '11-20 Parkings'
+                when ${Customer_byparking_tmp}='21'  then '21-50 Parkings'
+                when ${Customer_byparking_tmp}='51'  then '51-100 Parkings'
+                when ${Customer_byparking_tmp}='100' then '>100 Parkings'
+                else 'null'
+                end;;
+    order_by_field: Customer_byparking_tmp
+  }
+
   measure: count {
     label: "Videos Entries Count"
     type: count
