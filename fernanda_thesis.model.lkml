@@ -4,7 +4,7 @@ connection: "lookerdata_publicdata_standard_sql"
 include: "*.view"
 
 datagroup: fernanda_thesis_default_datagroup {
-#   sql_trigger: SELECT MAX(pk) FROM word_cloud;;
+   sql_trigger: SELECT MAX(pk) FROM word_cloud;;
 max_cache_age: "1200 hour"
 }
 
@@ -42,14 +42,14 @@ explore: videos {
 }
 
 explore: countries {
-  extends: [categories ]
+ extends: [categories]
 }
 
 explore: categories {}
 
 explore: word_cloud{}
 
-explore: videos_sme{}
+explore: videos_sme {}
 
 explore: create_process{}
 

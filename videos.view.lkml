@@ -1,5 +1,6 @@
 view: videos {
  derived_table: {
+  datagroup_trigger: fernanda_thesis_default_datagroup
   sql:
       WITH QUERY AS (
       SELECT 'Canada' as country, *
@@ -519,6 +520,7 @@ view: videos {
 
 
   measure: count_spring {
+    value_format:"#,##0"
     type: count_distinct
     sql: ${video_id};;
     filters: {
@@ -532,6 +534,7 @@ view: videos {
   }
 
   measure: count_autumn {
+    value_format: "0.000,,\" M\""
     type: count_distinct
     sql: ${video_id};;
     filters: {
@@ -552,7 +555,7 @@ view: videos {
   }
 
     parameter: yr {
-      type: unquoted
+      type: string
       allowed_value: {value: "2017" label:"2017"}
       allowed_value: {value: "2018" label:"2018"}
     }
@@ -600,8 +603,14 @@ view: videos {
 #     default_value: "Day"
 #   }
 
+  dimension: days_since_onsale {
+    label: "Days Since On-Sale"
+    type: number
+    sql:case when ${trending_raw} <= ${publish_raw} then date_diff(CURRENT_DATE(),${publish_date}, day)
+      Else 0 End;;
+  }
 
-#### DX-1857
+#### DX-1857########################################################
   dimension: Customer_byparking_tmp {
     label: "Customer parking bucket tmp"
     type: number
@@ -635,6 +644,7 @@ view: videos {
     order_by_field: Customer_byparking_tmp
   }
 
+################################################################################################
   measure: count {
     label: "Videos Entries Count"
     type: count

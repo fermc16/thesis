@@ -4,7 +4,7 @@ view: videos_sme {
       SELECT  'United States' as country, channelTitle, trending_date
       FROM Fernanda_thesis.Videos_US1
       WHERE {% condition date_filter %} PARSE_TIMESTAMP("%Y.%d.%m", CONCAT('20',trending_date)) {% endcondition %}
-      AND  {% condition channel_filter %} channelTitle {% endcondition %} ;;
+      AND  {% condition channel_filter %} channelTitle {% endcondition %};;
   }
 
   dimension: pk {
@@ -25,7 +25,7 @@ view: videos_sme {
 
   filter: date_filter {
     type: date
-#     default_value: "{{_user_attributes['last_name']}}"
+    default_value: "today"
   }
 
   filter: channel_filter {
@@ -53,6 +53,10 @@ view: videos_sme {
     sql: PARSE_TIMESTAMP("%Y.%d.%m", CONCAT('20',${TABLE}.trending_date)) ;;
   }
 
+  dimension: BusinessDate_Year {
+    sql: ${trending_year} ;;
+  }
+
   dimension: date_formatted {
     label: "Date_formatted"
     sql: ${trending_date} ;;
@@ -61,6 +65,18 @@ view: videos_sme {
       {{ rendered_value | date: "%m/%d/%y" }}
     {% elsif date_format._parameter_value == "'EU'" %}
       {{ rendered_value | date:  "%d/%m/%y" }}
+    {% else %}
+      {{ value}}
+    {% endif %};;
+  }
+
+  dimension: test_contains{
+    sql: ${country} ;;
+    html:
+    {% if value contains 'States' %}
+      <strong>test1 </strong>
+    {% elsif date_format._parameter_value contains 'Kingdom' %}
+      test2
     {% else %}
       {{ value}}
     {% endif %};;
